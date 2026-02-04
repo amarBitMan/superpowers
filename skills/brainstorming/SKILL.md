@@ -11,6 +11,38 @@ Help turn ideas into fully formed designs and specs through natural collaborativ
 
 Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
 
+## Project Context Integration
+
+**Before starting, check for existing project context:**
+
+1. Look for `docs/plans/*/requirement.md` in current directory
+2. If found, load:
+   - `requirement.md` - Original/enriched requirement
+   - `research.md` - Prior research findings (if exists)
+   - `state.md` - Current phase, prior decisions
+
+3. If project context exists:
+   ```
+   Found project context: <name>
+
+   Requirement: <first 100 chars>...
+   Research: <summary if exists>
+   Phase: <current phase>
+
+   Continuing brainstorm with this context.
+   ```
+
+4. If no context: proceed normally (standalone brainstorm)
+
+**After design complete:**
+
+1. If project context exists:
+   - Save design to `docs/plans/<project>/design.md`
+   - Add checkpoint: "brainstorm: design complete"
+
+2. If no project context:
+   - Save to `docs/plans/YYYY-MM-DD-<topic>-design.md` (existing behavior)
+
 ## The Process
 
 **Understanding the idea:**
@@ -52,3 +84,5 @@ Start by understanding the current project context, then ask questions one at a 
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design in sections, validate each
 - **Be flexible** - Go back and clarify when something doesn't make sense
+- **Context-aware** - Load existing project context if available
+- **Checkpoint decisions** - Offer to checkpoint key design decisions
