@@ -28,6 +28,61 @@ Write the test first. Watch it fail. Write minimal code to pass.
 
 Thinking "skip TDD just this once"? Stop. That's rationalization.
 
+## Testing Preference Hierarchy
+
+**Prefer integration tests:**
+1. Integration tests - Test real behavior with real dependencies
+2. Unit tests - Only for pure functions, complex algorithms, edge cases
+
+**Why integration tests first:**
+- Catch real bugs (not mock behavior)
+- Verify components work together
+- More confidence in actual system behavior
+- Fewer false positives from incorrect mocks
+
+**When to write unit tests:**
+- Pure functions with no side effects
+- Complex algorithms needing edge case coverage
+- Performance-critical code paths
+- When integration test would be impractically slow
+
+**Minimize mocking:**
+- Mock only external services you don't control
+- Never mock your own code unless absolutely necessary
+- If you need many mocks, design is too coupled
+
+<Good>
+```typescript
+// Integration test - tests real behavior
+test('user can complete checkout flow', async () => {
+  const user = await createTestUser(db);
+  const cart = await addToCart(db, user.id, productId);
+
+  const result = await checkout(cart.id);
+
+  expect(result.orderId).toBeDefined();
+  expect(await getOrderStatus(result.orderId)).toBe('confirmed');
+});
+```
+Real database, real checkout, tests actual flow
+</Good>
+
+<Bad>
+```typescript
+// Over-mocked unit test
+test('checkout calls payment service', async () => {
+  const mockPayment = jest.fn().mockResolvedValue({ success: true });
+  const mockInventory = jest.fn().mockResolvedValue(true);
+  const mockEmail = jest.fn();
+
+  await checkout(mockPayment, mockInventory, mockEmail);
+
+  expect(mockPayment).toHaveBeenCalled();
+});
+```
+Tests mock behavior, not real behavior
+</Bad>
+
 ## The Iron Law
 
 ```
