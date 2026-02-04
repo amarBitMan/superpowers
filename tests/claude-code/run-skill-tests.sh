@@ -57,7 +57,17 @@ while [[ $# -gt 0 ]]; do
             echo "  --help, -h           Show this help"
             echo ""
             echo "Tests:"
-            echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
+            echo "  test-subagent-driven-development.sh       Test skill loading and requirements"
+            echo "  test-project-context.sh                   Test project-context.js library"
+            echo "  test-init-skill.sh                        Test /init skill"
+            echo "  test-checkpoint-skill.sh                  Test /checkpoint skill"
+            echo "  test-continue-skill.sh                    Test /continue skill"
+            echo "  test-verify-skill.sh                      Test /verify skill"
+            echo "  test-complete-skill.sh                    Test /complete skill"
+            echo "  test-brainstorming-enhanced.sh            Test brainstorming enhancements"
+            echo "  test-executing-plans-enhanced.sh          Test executing-plans enhancements"
+            echo "  test-tdd-enhanced.sh                      Test TDD enhancements"
+            echo "  test-persistent-context-integration.sh    Full persistent context validation"
             echo ""
             echo "Integration Tests (use --integration):"
             echo "  test-subagent-driven-development-integration.sh  Full workflow execution"
@@ -74,6 +84,17 @@ done
 # List of skill tests to run (fast unit tests)
 tests=(
     "test-subagent-driven-development.sh"
+    # Persistent development context tests
+    "test-project-context.sh"
+    "test-init-skill.sh"
+    "test-checkpoint-skill.sh"
+    "test-continue-skill.sh"
+    "test-verify-skill.sh"
+    "test-complete-skill.sh"
+    "test-brainstorming-enhanced.sh"
+    "test-executing-plans-enhanced.sh"
+    "test-tdd-enhanced.sh"
+    "test-persistent-context-integration.sh"
 )
 
 # Integration tests (slow, full execution)
