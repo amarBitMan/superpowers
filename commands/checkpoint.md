@@ -1,0 +1,6 @@
+---
+description: "Save current state - captures phase, decisions, git commits to project context"
+disable-model-invocation: true
+---
+
+Invoke the superpowers:checkpoint skill and follow it exactly as presented to you
