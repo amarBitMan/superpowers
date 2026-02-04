@@ -46,32 +46,63 @@ Then install the plugin from this marketplace:
 
 To use a local/forked version instead of the marketplace version:
 
-1. **Uninstall marketplace version (if installed):**
-   ```bash
-   /plugin uninstall superpowers
-   ```
-
-2. **Clone or fork the repository:**
+1. **Clone or fork the repository:**
    ```bash
    git clone https://github.com/obra/superpowers.git
    cd superpowers
    ```
 
-3. **Install from local path:**
+2. **Add your local directory as a marketplace:**
    ```bash
-   /plugin install /path/to/your/superpowers
+   /plugin marketplace add /path/to/your/superpowers
    ```
 
-   For example:
+   This registers it as a local marketplace (e.g., `superpowers-dev` based on the `name` field in `.claude-plugin/marketplace.json`).
+
+3. **Install from your local marketplace:**
    ```bash
-   /plugin install ~/workspace/superpowers
+   /plugin install superpowers@superpowers-dev
    ```
 
-4. **To switch back to marketplace version:**
-   ```bash
-   /plugin uninstall superpowers
-   /plugin install superpowers@superpowers-marketplace
+4. **Update `~/.claude/settings.json` to enable the local plugin:**
+
+   If you previously had the official plugin installed, you must update `enabledPlugins`:
+   ```json
+   {
+     "enabledPlugins": {
+       "superpowers@superpowers-dev": true
+     }
+   }
    ```
+
+   Remove or change any existing `superpowers@claude-plugins-official` entry.
+
+5. **Clear the plugin cache:**
+   ```bash
+   rm -rf ~/.claude/plugins/cache
+   ```
+
+6. **Restart Claude Code**
+
+**Troubleshooting:** If Claude Code still loads the official plugin:
+- Check `~/.claude/settings.json` - ensure `enabledPlugins` points to your local marketplace
+- Check `~/.claude/plugins/installed_plugins.json` - remove any `superpowers@claude-plugins-official` entries
+- Clear cache again and restart
+
+**To switch back to marketplace version:**
+```bash
+# Update ~/.claude/settings.json enabledPlugins to:
+# "superpowers@superpowers-marketplace": true
+
+/plugin uninstall superpowers@superpowers-dev
+/plugin install superpowers@superpowers-marketplace
+```
+
+**For quick testing without marketplace setup**, use the `--plugin-dir` flag:
+```bash
+claude --plugin-dir /path/to/your/superpowers
+```
+This loads the plugin directly without installation, useful for rapid iteration.
 
 ### Verify Installation
 
