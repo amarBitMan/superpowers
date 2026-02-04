@@ -42,6 +42,37 @@ Then install the plugin from this marketplace:
 /plugin install superpowers@superpowers-marketplace
 ```
 
+### Claude Code (Local Development Version)
+
+To use a local/forked version instead of the marketplace version:
+
+1. **Uninstall marketplace version (if installed):**
+   ```bash
+   /plugin uninstall superpowers
+   ```
+
+2. **Clone or fork the repository:**
+   ```bash
+   git clone https://github.com/obra/superpowers.git
+   cd superpowers
+   ```
+
+3. **Install from local path:**
+   ```bash
+   /plugin install /path/to/your/superpowers
+   ```
+
+   For example:
+   ```bash
+   /plugin install ~/workspace/superpowers
+   ```
+
+4. **To switch back to marketplace version:**
+   ```bash
+   /plugin uninstall superpowers
+   /plugin install superpowers@superpowers-marketplace
+   ```
+
 ### Verify Installation
 
 Check that commands appear:
@@ -55,6 +86,11 @@ Check that commands appear:
 # /superpowers:brainstorm - Interactive design refinement
 # /superpowers:write-plan - Create implementation plan
 # /superpowers:execute-plan - Execute plan in batches
+# /superpowers:init - Start a new project with persistent context
+# /superpowers:checkpoint - Save current state
+# /superpowers:continue - Resume work with context
+# /superpowers:verify - Run tests and capture outcomes
+# /superpowers:complete - Mark project done
 ```
 
 ### Codex
@@ -95,6 +131,39 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
 
+## Persistent Development Context
+
+For multi-session projects, superpowers provides persistent context that survives session restarts:
+
+```bash
+# Start a new project
+/superpowers:init "Build user authentication with JWT"
+
+# Work on the project... brainstorm, plan, execute...
+
+# Save progress anytime
+/superpowers:checkpoint "implemented login flow"
+
+# --- Session ends, new session starts ---
+
+# Resume with full context
+/superpowers:continue
+
+# Run tests and capture results
+/superpowers:verify
+
+# When done
+/superpowers:complete
+```
+
+**Project context is stored in `docs/plans/<project-name>/`:**
+- `requirement.md` - Original requirement
+- `state.md` - Progress tracking (checkpoints, decisions)
+- `problems.md` - Issue log with investigation notes
+- `design.md` - Design document (after brainstorming)
+
+See [docs/persistent-context.md](docs/persistent-context.md) for full documentation.
+
 ## What's Inside
 
 ### Skills Library
@@ -106,7 +175,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 - **systematic-debugging** - 4-phase root cause process (includes root-cause-tracing, defense-in-depth, condition-based-waiting techniques)
 - **verification-before-completion** - Ensure it's actually fixed
 
-**Collaboration** 
+**Collaboration**
 - **brainstorming** - Socratic design refinement
 - **writing-plans** - Detailed implementation plans
 - **executing-plans** - Batch execution with checkpoints
@@ -116,6 +185,13 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 - **using-git-worktrees** - Parallel development branches
 - **finishing-a-development-branch** - Merge/PR decision workflow
 - **subagent-driven-development** - Fast iteration with two-stage review (spec compliance, then code quality)
+
+**Persistent Development Context**
+- **init** - Start a new project with persistent context (`/superpowers:init`)
+- **checkpoint** - Save current state anytime (`/superpowers:checkpoint`)
+- **continue** - Resume work with full context loaded (`/superpowers:continue`)
+- **verify** - Run tests and capture outcomes (`/superpowers:verify`)
+- **complete** - Mark project done with retrospective (`/superpowers:complete`)
 
 **Meta**
 - **writing-skills** - Create new skills following best practices (includes testing methodology)

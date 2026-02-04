@@ -6,31 +6,31 @@ A system for maintaining project context across Claude Code sessions, enabling i
 
 ```bash
 # Start a new project
-/init "Build a user authentication system with JWT"
+/superpowers:init "Build a user authentication system with JWT"
 
 # Save progress anytime
-/checkpoint "decided on refresh token approach"
+/superpowers:checkpoint "decided on refresh token approach"
 
 # Resume in a new session
-/continue
+/superpowers:continue
 
 # Run tests and capture results
-/verify
+/superpowers:verify
 
 # Complete the project
-/complete
+/superpowers:complete
 ```
 
 ## Commands
 
-### /init - Start a Project
+### /superpowers:init - Start a Project
 
 Creates project folder structure with persistent context files.
 
 ```bash
-/init "your requirement or idea"
-/init @requirement.md                    # From file
-/init --name "my-feature" "description"  # Explicit name
+/superpowers:init "your requirement or idea"
+/superpowers:init @requirement.md                    # From file
+/superpowers:init --name "my-feature" "description"  # Explicit name
 ```
 
 **Creates:**
@@ -42,14 +42,14 @@ Creates project folder structure with persistent context files.
 - Light/Medium/Thorough research before brainstorming
 - Skip research to go straight to design
 
-### /checkpoint - Save State
+### /superpowers:checkpoint - Save State
 
 Capture current progress at any point.
 
 ```bash
-/checkpoint                              # Auto-describe from activity
-/checkpoint "implemented login flow"     # Explicit description
-/checkpoint --verify                     # Run tests + capture results
+/superpowers:checkpoint                              # Auto-describe from activity
+/superpowers:checkpoint "implemented login flow"     # Explicit description
+/superpowers:checkpoint --verify                     # Run tests + capture results
 ```
 
 **Captures:**
@@ -57,16 +57,16 @@ Capture current progress at any point.
 - Recent git commits
 - Key decisions (prompts during design phases)
 
-### /continue - Resume Work
+### /superpowers:continue - Resume Work
 
 Single entry point for returning to a project.
 
 ```bash
-/continue                                # Load context, ask what to do
-/continue "auth broken after deploy"     # Log issue + iterate
-/continue --from brainstorm              # Resume from specific phase
-/continue my-project                     # Explicit project name
-/continue --full                         # Load all context sections
+/superpowers:continue                                # Load context, ask what to do
+/superpowers:continue "auth broken after deploy"     # Log issue + iterate
+/superpowers:continue --from brainstorm              # Resume from specific phase
+/superpowers:continue my-project                     # Explicit project name
+/superpowers:continue --full                         # Load all context sections
 ```
 
 **Iteration types:**
@@ -75,28 +75,28 @@ Single entry point for returning to a project.
 3. **Full rework** - Back to brainstorm with learnings
 4. **Research** - Investigate before deciding
 
-### /verify - Run Tests
+### /superpowers:verify - Run Tests
 
 Execute verification and capture outcomes.
 
 ```bash
-/verify                    # Run tests
-/verify --all              # Tests + lint + type checks
+/superpowers:verify                    # Run tests
+/superpowers:verify --all              # Tests + lint + type checks
 ```
 
 **On failure:**
 - Logs each failure to `problems.md`
 - Checkpoints verification results
-- Offers to iterate with `/continue`
+- Offers to iterate with `/superpowers:continue`
 
-### /complete - Finish Project
+### /superpowers:complete - Finish Project
 
 Mark project done with retrospective.
 
 ```bash
-/complete                  # Mark done, offer archive
-/complete --keep-active    # Done but keep visible
-/complete --archive        # Done and archive immediately
+/superpowers:complete                  # Mark done, offer archive
+/superpowers:complete --keep-active    # Done but keep visible
+/superpowers:complete --archive        # Done and archive immediately
 ```
 
 **Generates:**
@@ -125,7 +125,7 @@ docs/plans/<project-name>/
 
 ### With Brainstorming
 
-When `/brainstorm` detects project context:
+When `/superpowers:brainstorm` detects project context:
 - Loads requirement.md and research.md
 - Saves design to project folder
 - Checkpoints "brainstorm: design complete"
@@ -158,7 +158,7 @@ Context is loaded hierarchically based on iteration type:
 ## Tips
 
 - **Checkpoint often** - Low friction, captures git commits automatically
-- **Log issues immediately** - `/continue "issue description"` before fixing
+- **Log issues immediately** - `/superpowers:continue "issue description"` before fixing
 - **Use iteration types** - Match workflow depth to problem size
 - **Review problems.md** - Patterns reveal design issues
 - **Archive completed projects** - Keep active list focused
