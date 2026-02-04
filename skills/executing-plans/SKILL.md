@@ -49,6 +49,45 @@ After all tasks complete and verified:
 - **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
+## Project Context Integration
+
+**If project context exists (`docs/plans/<project>/state.md`):**
+
+### Auto-Checkpoint Per Batch
+
+After completing each batch of tasks:
+1. Get recent git commits
+2. Add checkpoint: "execute: tasks N-M complete"
+3. Update Implementation section with files changed
+
+### Auto-Log Problems
+
+When errors occur during execution:
+1. Log to `problems.md`:
+   ```markdown
+   ## execution-error-<task-number>
+   **Status:** Active
+   **Discovered:** <now>
+   **Task:** <task name>
+
+   ### Symptom
+   <error message>
+
+   ### Investigation
+   (pending)
+   ```
+2. Continue or stop based on severity
+
+### Auto-Verify at End
+
+After final task batch:
+1. Run full test suite
+2. If all pass: checkpoint "execute: complete, verified"
+3. If failures:
+   - Log failures to `problems.md`
+   - Checkpoint "execute: complete, X test failures"
+   - Ask: "Tests failing. Want to continue to iterate?"
+
 ## When to Stop and Ask for Help
 
 **STOP executing immediately when:**
@@ -75,6 +114,9 @@ After all tasks complete and verified:
 - Between batches: just report and wait
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
+- Auto-checkpoint after each batch (if project context exists)
+- Log errors to problems.md
+- Run verification after final batch
 
 ## Integration
 
