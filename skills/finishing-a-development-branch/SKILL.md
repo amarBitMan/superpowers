@@ -198,3 +198,5 @@ git worktree remove <worktree-path>
 
 **Pairs with:**
 - **using-git-worktrees** - Cleans up worktree created by that skill
+
+**Tip:** If project context exists (`docs/plans/*/state.md`), run `/superpowers:checkpoint` before finishing to save final state.

@@ -26,7 +26,7 @@ If no project found, say "No active project found." and stop.
 Check the last checkpoint in state.md for a recent "verified" entry.
 
 - If verified within the last hour: skip re-verification
-- If not recently verified: run `/verify` now
+- If not recently verified: run `/superpowers:verify` now
 - If tests are failing: warn the user — "Tests are failing. Complete anyway?" Wait for confirmation.
 
 ### Step 3: Generate retrospective

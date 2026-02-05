@@ -15,7 +15,21 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+## Project Context Integration
+
+**Before starting, check for existing project context:**
+
+1. Look for `docs/plans/*/state.md` in current directory
+2. If found, load:
+   - `requirement.md` — Original requirement
+   - `design.md` — Design from brainstorming (if exists)
+   - `state.md` — Current phase and decisions
+3. Use this context to inform the plan
+4. **Save plan to:** `docs/plans/<project>/plan.md`
+5. After saving, add checkpoint to state.md: `- **[<date>]** \`plan\`: implementation plan complete`
+6. Update Phase to `planning`
+
+**If no project context:** Save plans to `docs/plans/YYYY-MM-DD-<feature-name>.md`
 
 ## Bite-Sized Task Granularity
 

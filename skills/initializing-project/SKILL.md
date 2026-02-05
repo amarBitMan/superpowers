@@ -109,7 +109,7 @@ Add a checkpoint to state.md:
 
 Say exactly:
 
-"Project initialized! Run `/brainstorm` to explore approaches and create a design."
+"Project initialized! Run `/superpowers:brainstorm` to explore approaches and create a design."
 
 **Stop here. Do NOT proceed to implementation. Do NOT write code. Do NOT create deliverables.** The next step is always brainstorming.
 

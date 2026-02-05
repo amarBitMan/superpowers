@@ -75,7 +75,7 @@ If a project exists, add checkpoint to state.md:
    Duration: <time>
 
    Failures logged to problems.md.
-   Want to investigate? Use /continue to iterate.
+   Want to investigate? Use /superpowers:continue to iterate.
    ```
 
 3. Add checkpoint:

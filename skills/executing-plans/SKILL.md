@@ -86,7 +86,7 @@ After final task batch:
 3. If failures:
    - Log failures to `problems.md`
    - Checkpoint "execute: complete, X test failures"
-   - Ask: "Tests failing. Want to continue to iterate?"
+   - Ask: "Tests failing. Run `/superpowers:continue` to iterate on failures."
 
 ## When to Stop and Ask for Help
 

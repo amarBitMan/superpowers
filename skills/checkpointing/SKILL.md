@@ -17,7 +17,7 @@ Capture current progress to project context. Low friction, one command, minimal 
 
 Look for `docs/plans/*/state.md` in the current directory.
 
-- **No project found:** Say "No active project found. Run `/init` to start one." and stop.
+- **No project found:** Say "No active project found. Run `/superpowers:init` to start one." and stop.
 - **Multiple projects:** Ask the user which one. Wait for their answer.
 - **Single project:** Use it.
 

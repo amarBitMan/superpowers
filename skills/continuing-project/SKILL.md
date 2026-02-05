@@ -19,7 +19,7 @@ Resume work on a project. Load context, log new issues, route to the right workf
 
 Look for `docs/plans/*/state.md` in the current directory.
 
-- **No projects found:** Say "No active project found. Run `/init` to start one." and stop.
+- **No projects found:** Say "No active project found. Run `/superpowers:init` to start one." and stop.
 - **Multiple projects:** Ask the user which one. Wait for their answer.
 - **Single project:** Use it.
 - **Explicit name in arguments:** Use that project directly.
@@ -84,19 +84,18 @@ Based on the user's selection:
 **Quick fix:**
 - Make the fix directly
 - Run tests
-- Offer `/checkpoint` when done
+- Run `/superpowers:verify` to confirm the fix
+- Offer `/superpowers:checkpoint` when done
 
 **Scoped rework:**
 - Ask 1-2 clarifying questions about scope
 - Create a mini-plan (bullet points, not a full doc)
 - Implement changes
-- Run tests
-- Offer `/checkpoint` when done
+- Run `/superpowers:verify` to confirm changes
+- Offer `/superpowers:checkpoint` when done
 
 **Full rework:**
-- Route to `/brainstorm` for design discussion
-- Then `/write-plan` for a detailed plan
-- Then implementation
+- Route to `/superpowers:brainstorm` — this will chain through write-plan → execute-plan automatically
 
 **Research:**
 - Ask what needs investigation
