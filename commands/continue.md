@@ -3,4 +3,4 @@ description: "Resume work on a project - loads context, logs issues, routes to i
 disable-model-invocation: true
 ---
 
-Invoke the superpowers:continue skill and follow it exactly as presented to you
+Invoke the superpowers:continuing-project skill and follow it exactly as presented to you

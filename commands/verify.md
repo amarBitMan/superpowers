@@ -3,4 +3,4 @@ description: "Run tests and capture outcomes - logs failures to problems.md, che
 disable-model-invocation: true
 ---
 
-Invoke the superpowers:verify skill and follow it exactly as presented to you
+Invoke the superpowers:verifying skill and follow it exactly as presented to you

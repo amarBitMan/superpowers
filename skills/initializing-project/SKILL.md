@@ -1,5 +1,5 @@
 ---
-name: init
+name: initializing-project
 description: Use when starting a new project - captures requirement, creates folder structure, optionally runs research phase
 ---
 

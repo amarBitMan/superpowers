@@ -5,7 +5,7 @@ source "$SCRIPT_DIR/test-helpers.sh"
 
 echo "=== Test: continue skill ==="
 
-SKILL_FILE="$SCRIPT_DIR/../../skills/continue/SKILL.md"
+SKILL_FILE="$SCRIPT_DIR/../../skills/continuing-project/SKILL.md"
 CMD_FILE="$SCRIPT_DIR/../../commands/continue.md"
 
 # Test 1: Files exist
@@ -15,7 +15,7 @@ echo -e "\nTest 1: File structure..."
 
 # Test 2: Frontmatter
 echo -e "\nTest 2: Frontmatter..."
-grep -q "^name: continue$" "$SKILL_FILE" && echo "  [PASS] Name correct" || echo "  [FAIL] Name wrong"
+grep -q "^name: continuing-project$" "$SKILL_FILE" && echo "  [PASS] Name correct" || echo "  [FAIL] Name wrong"
 
 # Test 3: Key content - iteration types
 echo -e "\nTest 3: Iteration types..."

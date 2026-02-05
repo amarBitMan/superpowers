@@ -1,5 +1,5 @@
 ---
-name: checkpoint
+name: checkpointing
 description: Use anytime to save current state - captures phase, decisions, git commits, optionally runs tests
 ---
 

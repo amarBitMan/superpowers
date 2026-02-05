@@ -3,4 +3,4 @@ description: "Save current state - captures phase, decisions, git commits to pro
 disable-model-invocation: true
 ---
 
-Invoke the superpowers:checkpoint skill and follow it exactly as presented to you
+Invoke the superpowers:checkpointing skill and follow it exactly as presented to you

@@ -1,5 +1,5 @@
 ---
-name: continue
+name: continuing-project
 description: Use to resume work on a project with full context loaded - handles iteration after deployment/testing issues
 ---
 

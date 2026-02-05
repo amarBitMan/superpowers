@@ -1,5 +1,5 @@
 ---
-name: complete
+name: completing-project
 description: Use when project is done - creates final checkpoint, generates retrospective, optionally archives
 ---
 

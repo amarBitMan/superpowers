@@ -3,4 +3,4 @@ description: "Mark project complete - creates final checkpoint, generates retros
 disable-model-invocation: true
 ---
 
-Invoke the superpowers:complete skill and follow it exactly as presented to you
+Invoke the superpowers:completing-project skill and follow it exactly as presented to you

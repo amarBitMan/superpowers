@@ -1,5 +1,5 @@
 ---
-name: verify
+name: verifying
 description: Use to run tests and capture outcomes - logs failures to problems.md, checkpoints results
 ---
 

@@ -8,7 +8,7 @@ echo "=== Test: init skill ==="
 # Test 1: Skill file exists with correct frontmatter
 echo -e "\nTest 1: Skill structure..."
 
-SKILL_FILE="$SCRIPT_DIR/../../skills/init/SKILL.md"
+SKILL_FILE="$SCRIPT_DIR/../../skills/initializing-project/SKILL.md"
 if [ -f "$SKILL_FILE" ]; then
     echo "  [PASS] Skill file exists"
 else
@@ -17,7 +17,7 @@ else
 fi
 
 # Check frontmatter
-if grep -q "^name: init$" "$SKILL_FILE"; then
+if grep -q "^name: initializing-project$" "$SKILL_FILE"; then
     echo "  [PASS] Name in frontmatter"
 else
     echo "  [FAIL] Name missing from frontmatter"
@@ -39,7 +39,7 @@ else
     echo "  [FAIL] Command file missing"
 fi
 
-if grep -q "superpowers:init" "$CMD_FILE"; then
+if grep -q "superpowers:initializing-project" "$CMD_FILE"; then
     echo "  [PASS] Command invokes skill"
 else
     echo "  [FAIL] Command doesn't invoke skill"
