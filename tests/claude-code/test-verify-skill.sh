@@ -20,7 +20,7 @@ grep -q "description:" "$SKILL_FILE" && echo "  [PASS] Has description" || echo 
 
 # Test 3: Key content
 echo -e "\nTest 3: Key content..."
-grep -q "integration test" "$SKILL_FILE" && echo "  [PASS] Mentions integration tests" || echo "  [FAIL] Missing integration test reference"
+grep -q "test command" "$SKILL_FILE" && echo "  [PASS] Mentions test detection" || echo "  [FAIL] Missing test detection reference"
 grep -q "problems.md" "$SKILL_FILE" && echo "  [PASS] Logs to problems.md" || echo "  [FAIL] Missing problems.md reference"
 grep -q "\-\-all" "$SKILL_FILE" && echo "  [PASS] Has --all flag" || echo "  [FAIL] Missing --all flag"
 

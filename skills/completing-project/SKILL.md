@@ -7,46 +7,43 @@ description: Use when project is done - creates final checkpoint, generates retr
 
 ## Overview
 
-Mark a project as complete. Creates final checkpoint, generates brief retrospective, optionally archives context.
+Mark a project as complete. Verify tests, generate retrospective, optionally archive.
 
 **Announce at start:** "I'm using the complete skill to finalize this project."
 
-## Usage
-
-```bash
-/complete                  # Mark done, offer to archive
-/complete --keep-active    # Mark done but keep in active projects
-/complete --archive        # Mark done and archive immediately
-```
+**Do not mark a project complete with failing tests.** Run verification first.
 
 ## The Process
 
-### Step 1: Load Project
+### Step 1: Find and load the project
 
-Find and load project context.
+Look for `docs/plans/*/state.md`. Read state.md and problems.md fully.
 
-### Step 2: Final Verification
+If no project found, say "No active project found." and stop.
 
-Run `/verify` if not recently verified:
-- Check last checkpoint for "verified"
-- If not verified in last hour, run verification
-- If tests failing, warn before completing
+### Step 2: Run final verification
 
-### Step 3: Generate Retrospective
+Check the last checkpoint in state.md for a recent "verified" entry.
 
-Create brief summary:
+- If verified within the last hour: skip re-verification
+- If not recently verified: run `/verify` now
+- If tests are failing: warn the user — "Tests are failing. Complete anyway?" Wait for confirmation.
+
+### Step 3: Generate retrospective
+
+Read through the full state.md and problems.md. Write a retrospective and append it to state.md:
 
 ```markdown
 ## Retrospective
 
-**Duration:** <start date> to <end date> (<X days>)
-**Iterations:** <count of continue checkpoints>
+**Duration:** <start date> to <today> (<X days>)
+**Checkpoints:** <count>
 
 **What worked:**
-- <inferred from smooth checkpoints>
+- <inferred from smooth progress between checkpoints>
 
 **What didn't:**
-- <inferred from problems.md>
+- <inferred from problems.md entries>
 
 **Key decisions:**
 - <list from Decisions section>
@@ -57,68 +54,40 @@ Create brief summary:
 - Problems remaining: <count>
 ```
 
-### Step 4: Update State
+### Step 4: Update state
 
-1. Update state.md:
-   - Phase: complete
-   - Status: Done
-   - Add final checkpoint
+Update state.md:
+- Change Phase to `complete`
+- Change Status to `Done`
+- Add final checkpoint: `- **[<date>]** \`complete\`: Project finalized`
 
-2. Update problems.md:
-   - Move resolved problems to "Resolved" section
-   - Keep active problems visible with note
+### Step 5: Ask about archiving
 
-### Step 5: Archive (if requested)
+Ask the user:
 
-If `--archive` or user confirms:
+"Archive this project to `docs/plans/archive/`?"
 
-1. Create archive directory:
-   ```bash
-   mkdir -p docs/plans/archive/
-   ```
+1. **Yes** — Move the project folder to `docs/plans/archive/<project>/`
+2. **No** — Keep it in `docs/plans/` as-is
 
-2. Move project folder:
-   ```bash
-   mv docs/plans/<project>/ docs/plans/archive/<project>/
-   ```
+If `--archive` flag was passed, archive without asking.
+If `--keep-active` flag was passed, skip this step.
 
-3. Report:
-   ```
-   Project archived to docs/plans/archive/<project>/
-
-   To restore: mv docs/plans/archive/<project> docs/plans/
-   ```
-
-### Step 6: Confirm Completion
+### Step 6: Confirm completion
 
 ```
 Project complete: <name>
 
 Duration: <X days>
-Commits: <count>
+Checkpoints: <count>
 Problems resolved: <count>
 
 Retrospective saved to state.md.
 <Archived to docs/plans/archive/ | Kept in active projects>
-
-Great work!
 ```
 
 ## Key Principles
 
-- **Verify before complete** - Don't mark done with failing tests
-- **Learn from problems** - Retrospective captures learnings
-- **Archive optional** - Some projects worth keeping visible
-
-## Integration
-
-**Reads:**
-- state.md - Full project history
-- problems.md - All problems for retrospective
-
-**Updates:**
-- state.md - Final checkpoint, retrospective
-- problems.md - Resolve status updates
-
-**Optionally:**
-- Moves to archive/
+- **Verify before completing** — Don't mark done with failing tests
+- **Capture learnings** — The retrospective is for future reference
+- **Ask about archiving** — Don't auto-archive unless flagged

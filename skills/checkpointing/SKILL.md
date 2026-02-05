@@ -7,119 +7,79 @@ description: Use anytime to save current state - captures phase, decisions, git 
 
 ## Overview
 
-Save current state to project context. This skill is callable anytime during development - during brainstorming, after key decisions, mid-implementation, or after completing a milestone. It captures context that persists across sessions.
+Capture current progress to project context. Low friction, one command, minimal prompts.
 
-## Usage
+**Announce at start:** "I'm using the checkpoint skill to save current state."
+
+## The Process
+
+### Step 1: Find the active project
+
+Look for `docs/plans/*/state.md` in the current directory.
+
+- **No project found:** Say "No active project found. Run `/init` to start one." and stop.
+- **Multiple projects:** Ask the user which one. Wait for their answer.
+- **Single project:** Use it.
+
+### Step 2: Gather state
+
+Collect this information:
+
+1. **Current phase** — Determine from recent activity: brainstorming, planning, implementation, testing, or review
+2. **Recent git commit** — Run `git log -1 --oneline` to get the latest commit
+3. **Description** — Use the user-provided description (from `$ARGUMENTS`), or generate one from the git commit message
+
+### Step 3: Append checkpoint to state.md
+
+Read the current `state.md`. Add a new entry under the `## Checkpoints` section:
 
 ```
-/checkpoint
-/checkpoint "description of what was accomplished"
-/checkpoint --verify
+- **[<today's date>]** `<phase>`: <description>
 ```
 
-- **No arguments**: Save checkpoint with auto-generated description from git
-- **Description**: Save checkpoint with custom description
-- **`--verify`**: Run tests before saving, log any failures to problems.md
+Update the Summary section's Phase field if it changed.
 
-## Process
+### Step 4: Run tests (if --verify flag)
 
-### Step 1: Find Active Project
+If the user passed `--verify`:
 
-Look for active project by finding `docs/plans/*/state.md`:
-
-```javascript
-const pc = require('./lib/project-context.js');
-const projects = pc.findProjects('.');
-```
-
-If no project found:
-> "No active project found. Run `/init` to start a new project."
-
-If multiple projects found, ask user to select:
-> "Multiple projects found. Which one are you working on?"
-> 1. project-a
-> 2. project-b
-
-### Step 2: Gather State
-
-Collect information for the checkpoint:
-
-1. **Current phase**: Determine from context (brainstorming, planning, implementation, testing, review)
-2. **Git state**: Run `git log -1 --oneline` to get recent commit
-3. **Description**: Use provided description or generate from git commit message
-
-### Step 3: Update state.md
-
-Add checkpoint entry using the library:
-
-```javascript
-pc.addCheckpoint(projectDir, phase, description);
-```
-
-This adds an entry like:
-```
-- **[2024-01-15]** `implementation`: Added authentication middleware
-```
-
-### Step 4: Handle --verify Flag
-
-If `--verify` was passed:
-
-1. Look for test command in project (npm test, pytest, etc.)
+1. Detect the test command (look for package.json, Cargo.toml, pyproject.toml, go.mod)
 2. Run the tests
-3. If tests pass, include in checkpoint: "All tests passing"
-4. If tests fail:
-   - Log failures to problems.md:
-   ```javascript
-   pc.addProblem(projectDir, {
-       title: 'Test failures during checkpoint',
-       description: 'The following tests failed:\n' + failureOutput,
-       severity: 'high',
-       status: 'open'
-   });
+3. If all pass: add to checkpoint description "— all tests passing"
+4. If failures: append each failure to `problems.md` under `## Active`:
+   ```markdown
+   ### <test-name> failure
+   **Status:** Active
+   **Discovered:** <date>
+   **Symptom:** <error message>
+   **Investigation:** (pending)
    ```
-   - Include in checkpoint: "Tests failing - see problems.md"
 
-### Step 5: Handle Decision Capture
+### Step 5: Offer decision capture
 
-During brainstorming phase, offer to capture decisions:
+If the current phase is brainstorming or planning, ask:
 
-> "Would you like to record any key decisions made?"
->
-> Examples:
-> - "Using React over Vue for better ecosystem"
-> - "Chose PostgreSQL for relational data needs"
+"Any key decisions to record? (e.g., 'Chose PostgreSQL for relational data needs')"
 
-If yes, append to Decisions section in state.md:
+If yes, append to the `## Decisions` section in state.md.
 
-```javascript
-const state = pc.loadState(projectDir);
-let decisions = state.decisions || '';
-decisions += `\n- ${decision}`;
-pc.saveState(projectDir, { decisions });
+**If the phase is implementation or later, skip this step.**
+
+### Step 6: Confirm what was saved
+
+Display a summary:
+
 ```
+Checkpoint saved
 
-### Step 6: Confirm
-
-Show what was saved:
-
-> **Checkpoint saved**
->
-> - **Phase:** implementation
-> - **Description:** Added authentication middleware
-> - **Git:** abc123 - Add auth middleware
-> - **Tests:** All passing
+- Phase: <phase>
+- Description: <description>
+- Git: <commit hash> - <commit message>
+- Tests: <passing/failing/not run>
+```
 
 ## Key Principles
 
-- **Low friction** - One command captures state, minimal prompts
-- **Git-aware** - Automatically pulls context from git history
-- **Decision capture** - Important for brainstorming sessions
-- **Test integration** - Optional verification ensures quality checkpoints
-
-## Integration Notes
-
-- **Depends on**: `/init` (must have project created first)
-- **Used by**: `/continue` (reads checkpoints to restore context)
-- **State file**: Updates `state.md` in project folder
-- **Problems file**: May add entries when `--verify` finds test failures
+- **Low friction** — One command, minimal prompts, fast
+- **Git-aware** — Automatically pulls context from git history
+- **Always append** — Never overwrite existing checkpoints

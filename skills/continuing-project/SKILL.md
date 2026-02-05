@@ -7,151 +7,106 @@ description: Use to resume work on a project with full context loaded - handles 
 
 ## Overview
 
-Resume work on a project with full context loaded. This skill is the single entry point for returning to a project - it loads relevant context, logs any new issues discovered during deployment or testing, and routes to the appropriate iteration workflow.
+Resume work on a project. Load context, log new issues, route to the right workflow.
 
-## Usage
+**Announce at start:** "I'm using the continue skill to load project context and resume work."
 
-```
-/continue
-/continue "login page returns 500 error after deploy"
-/continue --from brainstorm
-/continue project-name
-/continue --full
-```
+**This is the single entry point for returning to a project.** Do not freelance. Follow the steps. Present context to the user. Ask what kind of iteration they need. Route accordingly.
 
-- **No arguments**: Resume with default context (summary + checkpoints + active problems)
-- **Quoted string**: Log new issue to problems.md, then route to iteration workflow
-- **`--from` flag**: Resume from specific phase (brainstorm, plan, implement, test)
-- **Project name**: Explicitly specify which project to continue
-- **`--full`**: Load complete context including all implementation details
+## The Process
 
-## Process
+### Step 1: Find the project
 
-### Step 1: Find Project
+Look for `docs/plans/*/state.md` in the current directory.
 
-Locate the active project:
+- **No projects found:** Say "No active project found. Run `/init` to start one." and stop.
+- **Multiple projects:** Ask the user which one. Wait for their answer.
+- **Single project:** Use it.
+- **Explicit name in arguments:** Use that project directly.
 
-```javascript
-const pc = require('./lib/project-context.js');
-const projects = pc.findProjects('.');
-```
+### Step 2: Load context
 
-**Project selection logic:**
-- **Single project**: Auto-select it
-- **Multiple projects**: Prompt user to select
-- **Explicit name provided**: Use that project directly
-- **No projects found**: Suggest running `/init`
+Read the project files and load context based on flags:
 
-### Step 2: Load Context
+| Flag | What to read |
+|------|-------------|
+| (default) | state.md Summary + Checkpoints + problems.md Active section |
+| `--from brainstorm` | state.md Summary + Decisions |
+| `--from plan` | state.md Summary + Checkpoints + Implementation |
+| `--from implement` | state.md Summary + Checkpoints + Implementation |
+| `--from test` | state.md Summary + Checkpoints + problems.md Active |
+| `--full` | Everything in state.md + all of problems.md |
 
-Load project context based on flags:
+### Step 3: Log new issues (if provided)
 
-| Flag | Sections Loaded |
-|------|-----------------|
-| (default) | Summary + Checkpoints + Active problems |
-| `--from brainstorm` | Summary + Decisions |
-| `--from plan` | Summary + Checkpoints + Implementation outline |
-| `--from implement` | Summary + Checkpoints + Implementation + Testing |
-| `--from test` | Summary + Checkpoints + Testing + Active problems |
-| `--full` | All sections from state.md + all problems.md |
+If the user provided a description in quotes (e.g., `/continue "login returns 500"`):
 
-```javascript
-// Default context loading
-const state = pc.loadState(projectDir, {
-    sections: ['summary', 'checkpoints']
-});
-const problems = pc.loadProblems(projectDir, { status: 'open' });
+Append to `problems.md` under `## Active`:
+```markdown
+### <brief title derived from description>
+**Status:** Active
+**Discovered:** <today's date>
+**Symptom:** <user's description>
+**Investigation:** (pending)
 ```
 
-### Step 3: Log New Issues (if provided)
+### Step 4: Present context to the user
 
-If user provided issues in quotes:
+Display what you loaded. **You must show this before doing anything else:**
 
-```javascript
-pc.addProblem(projectDir, {
-    title: 'Issue from deployment/testing',
-    description: userProvidedIssue,
-    severity: 'high',
-    status: 'open'
-});
+```
+Project: <project-name>
+
+Phase: <current phase>
+Status: <active/complete>
+Last checkpoint: <date> — <description>
+
+Active problems: <count>
+- <problem 1>
+- <problem 2>
 ```
 
-### Step 4: Present Context Summary
+### Step 5: Ask the iteration type
 
-Display loaded context to user:
+**You must ask this question and wait for the user to answer. Do NOT assume.**
 
-> **Project: `<project-name>`**
->
-> **Summary:** <brief summary>
->
-> **Recent Checkpoints:**
-> - [date] phase: description
-> - [date] phase: description
->
-> **Active Problems:** <count>
-> - Problem 1 (severity)
-> - Problem 2 (severity)
+"What kind of iteration is needed?"
 
-### Step 5: Ask Iteration Type
+1. **Quick fix** — Minor bug fix or small tweak
+2. **Scoped rework** — Focused changes to a specific component
+3. **Full rework** — Significant changes, needs re-design
+4. **Research** — Need to investigate before deciding
 
-Present iteration options:
+### Step 6: Route to the right workflow
 
-> "What kind of iteration is needed?"
->
-> 1. **Quick fix** - Minor bug fix or small tweak (< 30 min)
-> 2. **Scoped rework** - Focused changes to specific component (1-2 hours)
-> 3. **Full rework** - Significant changes across multiple files (half day+)
-> 4. **Research** - Need to investigate before deciding approach
-
-### Step 6: Route to Workflow
-
-Based on selection:
+Based on the user's selection:
 
 **Quick fix:**
-- Jump straight to implementation
-- Make the fix
+- Make the fix directly
 - Run tests
 - Offer `/checkpoint` when done
 
 **Scoped rework:**
-- Clarify scope with 1-2 questions
-- Create mini-plan (bullet points, not full doc)
+- Ask 1-2 clarifying questions about scope
+- Create a mini-plan (bullet points, not a full doc)
 - Implement changes
 - Run tests
 - Offer `/checkpoint` when done
 
 **Full rework:**
 - Route to `/brainstorm` for design discussion
-- Then `/write-plan` for detailed plan
+- Then `/write-plan` for a detailed plan
 - Then implementation
 
 **Research:**
 - Ask what needs investigation
-- Perform research (web search, code exploration, documentation)
+- Perform research (web search, code exploration, docs)
 - Present findings
 - Return to iteration type selection
 
-## Hierarchical Context Loading
-
-Context is loaded hierarchically to manage token usage:
-
-| Level | Content | Use Case |
-|-------|---------|----------|
-| **Minimal** | Summary only | Quick status check |
-| **Default** | Summary + Checkpoints + Active problems | Most iterations |
-| **Phase-specific** | Default + phase-relevant sections | Resuming specific work |
-| **Full** | Everything | Deep debugging, major rework |
-
 ## Key Principles
 
-- **Single entry point** - All resumption flows through `/continue`
-- **Log + act** - Always capture issues before working on them
-- **Smart routing** - Match iteration type to appropriate workflow depth
-- **Context-appropriate** - Load only what's needed to minimize noise
-
-## Integration Notes
-
-- **Depends on**: `/init` (must have project created first)
-- **Routes to**: `/brainstorm` (for full rework), implementation (for quick fix/scoped)
-- **Uses**: `state.md` for context, `problems.md` for issue tracking
-- **Paired with**: `/checkpoint` (save state after iteration complete)
+- **Always show context first** — The user needs to see where things stand
+- **Always ask iteration type** — Don't assume the scope of work needed
+- **Log before fixing** — Capture issues to problems.md before working on them
+- **Route, don't improvise** — Match iteration type to the right workflow depth
