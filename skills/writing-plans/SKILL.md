@@ -31,6 +31,24 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **If no project context:** Save plans to `docs/plans/YYYY-MM-DD-<feature-name>.md`
 
+## Skill-Aware Planning
+
+**Before writing the plan, scan available skills** (listed in system prompt). If relevant skills exist for the work, embed them as `REQUIRED SUB-SKILL` markers in the appropriate plan steps.
+
+Common mappings:
+- Test writing steps → `superpowers:test-driven-development`
+- Bug investigation steps → `superpowers:systematic-debugging`
+- Final verification steps → `superpowers:verification-before-completion`
+- Code review steps → `superpowers:requesting-code-review`
+
+Example of a skill-aware step:
+```markdown
+**Step 1: Write the failing test**
+> **REQUIRED SUB-SKILL:** Use superpowers:test-driven-development
+```
+
+The executing agent will invoke these skills when it reaches those steps. Only reference skills that are actually available — do not invent skill names.
+
 ## Bite-Sized Task Granularity
 
 **Each step is one action (2-5 minutes):**
@@ -105,7 +123,7 @@ git commit -m "feat: add specific feature"
 - Exact file paths always
 - Complete code in plan (not "add validation")
 - Exact commands with expected output
-- Reference relevant skills with @ syntax
+- Embed `REQUIRED SUB-SKILL` markers for available skills in relevant steps
 - DRY, YAGNI, TDD, frequent commits
 
 ## Execution Handoff
