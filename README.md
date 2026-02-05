@@ -98,11 +98,18 @@ To use a local/forked version instead of the marketplace version:
 /plugin install superpowers@superpowers-marketplace
 ```
 
+**After making changes to the plugin source**, you must clear the cache and restart:
+```bash
+rm -rf ~/.claude/plugins/cache
+# Then restart Claude Code
+```
+Claude Code caches plugins at install/startup time and does not auto-detect source changes. You must clear the cache every time you modify skills, commands, or other plugin files.
+
 **For quick testing without marketplace setup**, use the `--plugin-dir` flag:
 ```bash
 claude --plugin-dir /path/to/your/superpowers
 ```
-This loads the plugin directly without installation, useful for rapid iteration.
+This loads the plugin directly without installation or caching, useful for rapid iteration.
 
 ### Verify Installation
 
